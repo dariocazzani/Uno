@@ -1,11 +1,12 @@
 import praw
 import os
+import settings
 
 class RedditAPI:
 	def __init__(self, subject):
 		
 		self.PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-		self.user_agent = ("spiderman2016_0.1")
+		self.user_agent = settings.USER_AGENT
 		self.r = praw.Reddit(user_agent = self.user_agent)
 		self.subject = subject
 		self.subreddit = self.r.get_subreddit(subject)
