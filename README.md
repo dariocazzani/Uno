@@ -1,0 +1,2 @@
+# Uno
+First smart bot
