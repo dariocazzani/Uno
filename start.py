@@ -20,8 +20,6 @@ twitter = TwitterAPI()
 if __name__ == "__main__":
 
 	while True:
-		time.sleep(100)
-
 		done = False
 		while not done:
 			next_topic = random.randint(0, len(reddit_list)-1)
@@ -37,7 +35,10 @@ if __name__ == "__main__":
 			message = title + ' ' + link
 			try:
 				twitter.tweet(message)
+				print('Tweeting...')
 				done = True
 			except:
 				pass
+
+		time.sleep(3600)
 

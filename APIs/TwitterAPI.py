@@ -3,7 +3,9 @@ import sys
 import settings
 
 class TwitterAPI:
+    
     def __init__(self):
+
         consumer_key = settings.CONSUMER_KEY
         consumer_secret = settings.CONSUMER_SECRET
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -15,6 +17,7 @@ class TwitterAPI:
         self.MAX_LEN = 140
 
     def tweet(self, message):
+
         if not isinstance(message, basestring):
             raise TypeError("Tweet must be a string")
         if len(message) > self.MAX_LEN:
