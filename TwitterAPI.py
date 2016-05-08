@@ -1,23 +1,24 @@
 import tweepy
 import sys
+import settings
 
 class TwitterAPI:
     def __init__(self):
-        consumer_key = "vZhKYSKqGsnMwiIIXNzHq4UL9"
-        consumer_secret = "lQ8POzsOH9nsWoJnp8mmGGLhZsSTSreqEf5fUe9PtnavfOg9aO"
+        consumer_key = settings.CONSUMER_KEY
+        consumer_secret = settings.CONSUMER_SECRET
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-        access_token = "258817015-fJfHoOwBNe25yJtONxoBNjO8Pv4igpJ5HHapBNYj"
-        access_token_secret = "eVUAogOD9whc8KZAyeDbp181WdYHksmL0tCFSXRoWGXhX"
+        access_token = settings.ACCESS_TOKEN
+        access_token_secret = settings.ACCESS_TOKEN_SECRET
         auth.set_access_token(access_token, access_token_secret)
         
         self.api = tweepy.API(auth)
-        self.max_len = 140
+        self.MAX_LEN = 140
 
     def tweet(self, message):
         if not isinstance(message, basestring):
             raise TypeError("Tweet must be a string")
-        if len(message) > self.max_len:
-            raise ValueError("Tweet must be max %d character len" % self.max_len)
+        if len(message) > self.MAX_LEN:
+            raise ValueError("Tweet must be max %d character len" % self.MAX_LEN)
         try:
             self.api.update_status(status=message)
         except Exception as e:
@@ -28,5 +29,5 @@ if __name__ == "__main__":
     
     twitter = TwitterAPI()
 
-    message = 'I like coding bots!'
+    message = 'I like coding bots! A lot!'
     twitter.tweet(message)
