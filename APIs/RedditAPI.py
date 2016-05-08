@@ -6,17 +6,17 @@ class RedditAPI:
 	def __init__(self, subject):
 		
 		self.PROJECT_DIR = settings.PROJECT_DIR
+		self.APIs = self.PROJECT_DIR + '/APIs'
 		self.user_agent = settings.USER_AGENT
 		self.r = praw.Reddit(user_agent = self.user_agent)
-		self.subject = subject
 		self.subreddit = self.r.get_subreddit(subject)
-		self.filename = self.PROJECT_DIR + '/used_ids.ids'
+		self.filename_ids = self.APIs + '/used_ids.ids'
 		
-		if os.path.isfile(self.filename):
-			with open(self.filename) as f:
+		if os.path.isfile(self.filename_ids):
+			with open(self.filename_ids) as f:
 				self.used_ids = f.read().splitlines()
 		else:
-			with open(self.filename, 'w') as f:
+			with open(self.filename_ids, 'w') as f:
 				f.write('asdfg\n') # dummy id
 				self.used_ids = []
 
@@ -35,7 +35,7 @@ class RedditAPI:
 				pass
 		# append new id to list of used posts, both file and class variabls
 		self.used_ids.append(_id)
-		with open(self.filename, 'a') as f:
+		with open(self.filename_ids, 'a') as f:
 			f.write(_id + '\n')
 
 		return title, link
