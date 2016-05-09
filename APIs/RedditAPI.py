@@ -3,14 +3,13 @@ import os
 import settings
 
 class RedditAPI:
-	
-	def __init__(self, subject):
+
+	def __init__(self):
 		
 		self.PROJECT_DIR = settings.PROJECT_DIR
 		self.APIs = self.PROJECT_DIR + '/APIs'
 		self.user_agent = settings.USER_AGENT
 		self.r = praw.Reddit(user_agent = self.user_agent)
-		self.subject = subject
 		self.filename_ids = self.APIs + '/used_ids.ids'
 		
 		if os.path.isfile(self.filename_ids):
@@ -22,10 +21,10 @@ class RedditAPI:
 				self.used_ids = []
 
 	# return title and url to hottest unseen post
-	def get_post(self):
+	def get_post(self, subject):
 
 		# create subreddit
-		subreddit = self.r.get_subreddit(self.subject)
+		subreddit = self.r.get_subreddit(subject)
 		# get hot 100 and return the one with highest score
 		# if not already returned
 		score = 0
