@@ -19,14 +19,14 @@ if __name__ == "__main__":
 	while True:
 		done = False
 		while not done:
-			next_topic = topics[random.randint(0, len(reddit_list)-1)]
+			next_topic = topics[random.randint(0, len(topics)-1)]
 			print('Next chosen topic: %s' % next_topic)
 			try:
-				title, link = reddit_list[next_topic].get_post(next_topic)
+				title, link = reddit.get_post(next_topic)
 				print('Title: ' + title)
 				print('Url: ' + link)
-			except:
-				pass
+			except Exception as e:
+				print('Could not read topic, error was %s' % e)
 
 			# create tweet
 			message = title + ' ' + link
