@@ -9,23 +9,20 @@ topics = ['python',
 			'machinelearning',
 			'matlab']
 
-# create list of reddits, one for topic
-reddit_list = []
-for topic in topics:
-	reddit_list.append(RedditAPI(topic))
-
 # create twitter object
 twitter = TwitterAPI()
+# create reddit object
+reddit = RedditAPI()
 
 if __name__ == "__main__":
 
 	while True:
 		done = False
 		while not done:
-			next_topic = random.randint(0, len(reddit_list)-1)
-			print('Next chosen topic: %s' % topics[next_topic])
+			next_topic = topics[random.randint(0, len(reddit_list)-1)]
+			print('Next chosen topic: %s' % next_topic)
 			try:
-				title, link = reddit_list[next_topic].get_post()
+				title, link = reddit_list[next_topic].get_post(next_topic)
 				print('Title: ' + title)
 				print('Url: ' + link)
 			except:
