@@ -40,4 +40,3 @@ if __name__ == "__main__":
 				pass
 
 		time.sleep(random.randint(1200, 3600))
-
