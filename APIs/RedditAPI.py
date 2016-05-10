@@ -7,10 +7,9 @@ class RedditAPI:
 	def __init__(self):
 		
 		self.PROJECT_DIR = settings.PROJECT_DIR
-		self.APIs = self.PROJECT_DIR + '/APIs'
 		self.user_agent = settings.USER_AGENT
 		self.r = praw.Reddit(user_agent = self.user_agent)
-		self.filename_ids = self.APIs + '/used_ids.ids'
+		self.filename_ids = self.PROJECT_DIR + '/used_ids.ids'
 		
 		if os.path.isfile(self.filename_ids):
 			with open(self.filename_ids) as f:
@@ -45,10 +44,10 @@ class RedditAPI:
 
 if __name__ == "__main__":
 
-	reddit = RedditAPI('python')
-	title, link = reddit.get_post()
+	reddit = RedditAPI()
+	title, link = reddit.get_post('python')
 	print('Title: ' + title)
 	print('Url: ' + link)
-	title, link = reddit.get_post()
+	title, link = reddit.get_post('python')
 	print('Title: ' + title)
 	print('Url: ' + link)
