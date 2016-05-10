@@ -3,11 +3,13 @@ from APIs.TwitterAPI import TwitterAPI
 import random
 import time
 
-# list of interesting topics
-topics = ['python',
+# list of interesting reddit topics
+reddit_topics = ['Python',
 			'deeplearning',
 			'machinelearning',
-			'matlab']
+			'Matlab',
+			'TensorFlow',
+			'NeuralNetworks']
 
 # create twitter object
 twitter = TwitterAPI()
@@ -19,17 +21,17 @@ if __name__ == "__main__":
 	while True:
 		done = False
 		while not done:
-			next_topic = topics[random.randint(0, len(topics)-1)]
-			print('Next chosen topic: %s' % next_topic)
+			next_reddit_topic = reddit_topics[random.randint(0, len(reddit_topics)-1)]
+			print('Next chosen reddit topic: %s' % next_topic)
 			try:
-				title, link = reddit.get_post(next_topic)
+				title, link = reddit.get_post(next_reddit_topic)
 				print('Title: ' + title)
 				print('Url: ' + link)
 			except Exception as e:
 				print('Could not read topic, error was %s' % e)
 
 			# create tweet
-			message = title + ' ' + ' #' + next_topic + ' ' + link
+			message = title + ' ' + ' #' + next_reddit_topic + ' ' + link
 			try:
 				twitter.tweet(message)
 				print('Tweeting...')
@@ -37,5 +39,5 @@ if __name__ == "__main__":
 			except:
 				pass
 
-		time.sleep(3600)
+		time.sleep(random.randint(1200, 360))
 
