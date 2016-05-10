@@ -22,7 +22,7 @@ if __name__ == "__main__":
 		done = False
 		while not done:
 			next_reddit_topic = reddit_topics[random.randint(0, len(reddit_topics)-1)]
-			print('Next chosen reddit topic: %s' % next_topic)
+			print('Next chosen reddit topic: %s' % next_reddit_topic)
 			try:
 				title, link = reddit.get_post(next_reddit_topic)
 				print('Title: ' + title)
