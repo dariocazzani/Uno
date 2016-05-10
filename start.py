@@ -29,7 +29,7 @@ if __name__ == "__main__":
 				print('Could not read topic, error was %s' % e)
 
 			# create tweet
-			message = title + ' ' + link
+			message = title + ' ' + ' #' + next_topic + ' ' + link
 			try:
 				twitter.tweet(message)
 				print('Tweeting...')
