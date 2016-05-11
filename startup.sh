@@ -15,7 +15,10 @@ cd /home/pi/Dev/Uno
 pip install --user -r requirements.txt
 
 # cd out of repo
-cd ~/
+cd /home/pi
+
+# activate virtualenv
+workon bots
 
 # send IP to admin
 
