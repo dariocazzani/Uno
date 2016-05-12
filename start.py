@@ -11,6 +11,22 @@ reddit_topics = ['Python',
 			'TensorFlow',
 			'NeuralNetworks']
 
+# list of interesting hastags
+twitter_hastags = ['#bigdata',
+					'#datascience',
+					'#MachineLearning',
+					'#NeuralNetworks',
+					'#AI',
+					'#TensorFlow',
+					'#Python',
+					'#RecurrentNeuralNetworks',
+					'#bigdata',
+					'#NLP',
+					'#NatualLanguageUnderstanding',
+					'#NLU',
+					'#SyntaxNet'
+					]
+
 # create twitter object
 twitter = TwitterAPI()
 # create reddit object
@@ -18,9 +34,15 @@ reddit = RedditAPI()
 
 if __name__ == "__main__":
 
+	# to be done as self:
+	max_trials = 1000
+
+	
 	while True:
+		# Post a Reddit
 		done = False
-		while not done:
+		trials = 1
+		while not done and trials <= max_trials:
 			next_reddit_topic = reddit_topics[random.randint(0, len(reddit_topics)-1)]
 			print('Next chosen reddit topic: %s' % next_reddit_topic)
 			try:
@@ -38,5 +60,40 @@ if __name__ == "__main__":
 				done = True
 			except:
 				pass
+			trials += 1
 
-		time.sleep(random.randint(1200, 3600))
+		if not done:
+			# do something, we can not find any more reddits!!!!! SHIT!
+			pass
+
+		time.sleep(random.randint(600, 1200))
+
+
+		# retweet an interesting tweet
+
+		# select a random number of random hastags from the list
+
+		done = False
+		trials = 1
+		while not done and trials <= max_trials:
+			selected_hashtags = random.sample(twitter_hastags, random.randint(1, len(twitter_hastags)))
+			selected_tweet = twitter.search_hashtag(selected_hashtags)
+			if selected_tweet != -1:				
+				try:
+					print('Selected hashtags: %s' % str(selected_hashtags))
+					print('selected_tweet: %s' % str(twitter.get_tweet(selected_tweet)))
+					twitter.retweet(selected_tweet)
+					print('Retweeting...')
+					done = True
+				except:
+					pass
+			
+			trials += 1
+
+		if not done:
+			# do something, we can not find any more tweet!!!!! SHIT!
+			pass
+		
+		time.sleep(random.randint(600, 1200))
+
+
