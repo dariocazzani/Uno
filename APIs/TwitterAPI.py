@@ -3,6 +3,7 @@ import sys
 import settings
 import random
 import os
+import time
 
 class TwitterAPI:
     
@@ -52,18 +53,27 @@ class TwitterAPI:
             if len(h) < 2 or len(h) > 30:
                 raise ValueError("hashtag must be at least 1 character long and less than 30")
 
-
         query = ' '.join(hashtags)
-        max_tweets = 100
-        searched_tweets = [status for status in tweepy.Cursor(self.api.search, q=query, 
-                            result_type="recent", lang="en").items(max_tweets)]
+        max_tweets = 300
+        searched_tweets = []
+        try:
+            searched_tweets = [status for status in tweepy.Cursor(self.api.search, q=query, 
+                                result_type="recent", lang="en").items(max_tweets)]
+        except Exception as e:
+            print('Could not search tweets, error was %s, possibly too many requests.\nSleeping for 5 minutes...' %e)
+            time.sleep(300)
         # if no result, pop one hashtag and try again
         while len(searched_tweets) == 0:
             if not hashtags: 
                 return -1
             else:
                 hashtags.pop(random.randint(0, len(hashtags) - 1))
-                searched_tweets = [status for status in tweepy.Cursor(self.api.search, q=query).items(max_tweets)]
+                try:
+                    searched_tweets = [status for status in tweepy.Cursor(self.api.search, q=query, 
+                                result_type="recent", lang="en").items(max_tweets)]
+                except Exception as e:
+                    print('Could not search tweets, error was %s, possibly too many requests.\nSleeping for 5 minutes...' %e)
+                    time.sleep(300) 
 
         status = 0
         # select one tweet that has not been searched before
@@ -83,7 +93,7 @@ class TwitterAPI:
     def remove_id_from_list(self, _id):
         """
         implement a function that given an id, removes that tweet from the used_tweet file so
-        that it can be used
+        that it can be used (again)
         """
         return
 

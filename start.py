@@ -12,8 +12,7 @@ reddit_topics = ['Python',
 			'NeuralNetworks']
 
 # list of interesting hastags
-twitter_hastags = ['#bigdata',
-					'#datascience',
+twitter_hastags = ['#datascience',
 					'#MachineLearning',
 					'#NeuralNetworks',
 					'#AI',
@@ -24,7 +23,8 @@ twitter_hastags = ['#bigdata',
 					'#NLP',
 					'#NatualLanguageUnderstanding',
 					'#NLU',
-					'#SyntaxNet'
+					'#SyntaxNet',
+					'#raspberrypi'
 					]
 
 # create twitter object
@@ -63,10 +63,12 @@ if __name__ == "__main__":
 			trials += 1
 
 		if not done:
-			# do something, we can not find any more reddits!!!!! SHIT!
+			# You gotta do something, we can not find any more reddits!!!!! SHIT!
 			pass
 
-		time.sleep(random.randint(600, 1200))
+		#think_time = random.randint(600, 1200)
+		#print('Thinking for %d seconds...' % think_time)
+		#time.sleep(think_time)
 
 
 		# retweet an interesting tweet
@@ -81,19 +83,20 @@ if __name__ == "__main__":
 			if selected_tweet != -1:				
 				try:
 					print('Selected hashtags: %s' % str(selected_hashtags))
-					print('selected_tweet: %s' % str(twitter.get_tweet(selected_tweet)))
+					#print('selected_tweet: %s' % str(twitter.get_tweet(selected_tweet)))
 					twitter.retweet(selected_tweet)
 					print('Retweeting...')
 					done = True
-				except:
+				except Exception as e:
+					print('Could not retweet, error was: %s. Trying with an other combination of hashtags' %e)
 					pass
 			
 			trials += 1
 
 		if not done:
-			# do something, we can not find any more tweet!!!!! SHIT!
+			# You gotta do something, we can not find any more tweet!!!!! SHIT!
 			pass
 		
-		time.sleep(random.randint(600, 1200))
-
-
+		think_time = random.randint(600, 1200)
+		print('Thinking for %d seconds...' % think_time)
+		time.sleep(think_time)

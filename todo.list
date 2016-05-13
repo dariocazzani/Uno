@@ -1,3 +1,5 @@
+* Fix unicode ascii issue when printing tweet to retweet: 
+	http://stackoverflow.com/questions/9942594/unicodeencodeerror-ascii-codec-cant-encode-character-u-xa0-in-position-20
 * Look all tweets of a user and determine by his/her hashtags if s/he is worth following
 
 	new_tweets = api.user_timeline(screen_name = 'dariocazzani', count=20)
