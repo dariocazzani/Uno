@@ -3,6 +3,7 @@ from APIs.TwitterAPI import TwitterAPI
 import random
 import time
 import threading
+import json
 
 class Social_brain(object):
 
@@ -13,29 +14,29 @@ class Social_brain(object):
 		self.reddit = RedditAPI()
 
 		# import knowledge and interests
-		# reddit interes
-		self.reddit_topics = ['Python',
-			'deeplearning',
-			'machinelearning',
-			'Matlab',
-			'TensorFlow',
-			'NeuralNetworks']
+		self.reddit_topics = self.import_interests('reddit')
+		self.twitter_hashtags = self.import_interests('twitter')
 
-		# twitter interests
-		self.twitter_hastags = ['#datascience',
-					'#MachineLearning',
-					'#NeuralNetworks',
-					'#AI',
-					'#TensorFlow',
-					'#Python',
-					'#RecurrentNeuralNetworks',
-					'#bigdata',
-					'#NLP',
-					'#NatualLanguageUnderstanding',
-					'#SyntaxNet',
-					'#raspberrypi',
-					'#GoogLeNet',
-					]
+	def import_interests(self, source):
+		
+		print('Loading interests...')
+		filename = 'interests.json'
+		try:
+			with open(filename, 'r') as f:
+				interests = json.load(f)
+		except Exception as e:
+			print('Could not open file %s.\nError was: %s' %(filename, e))
+			return []
+
+		# check that source is known
+		if source not in interests.keys():
+			raise KeyError("Unknown source.\nUno knows from these sources %s" %interests.keys())
+			return []
+		else:
+			return interests[source]
+
+	def add_interests(self, source, subject):
+		return
 
 	def post_reddit(self):
 
@@ -45,6 +46,7 @@ class Social_brain(object):
 			# Post a Reddit
 			done = False
 			trials = 1
+			print('Tweeting from Reddit...')
 			while not done and trials <= max_trials:
 				next_reddit_topic = self.reddit_topics[random.randint(0, len(self.reddit_topics)-1)]
 				print('Next chosen reddit topic: %s' % next_reddit_topic)
@@ -81,32 +83,34 @@ class Social_brain(object):
 
 		max_trials = 1000
 
-		# select a random number of random hastags from the list
-		done = False
-		trials = 1
-		while not done and trials <= max_trials:
-			selected_hashtags = random.sample(self.twitter_hastags, random.randint(1, len(self.twitter_hastags)))
-			selected_tweet = self.twitter.search_hashtag(selected_hashtags)
-			if selected_tweet != -1:				
-				try:
-					print('Selected hashtags: %s' % str(selected_hashtags))
-					#print('selected_tweet: %s' % str(twitter.get_tweet(selected_tweet)))
-					self.twitter.retweet(selected_tweet)
-					print('Retweeting...')
-					done = True
-				except Exception as e:
-					print('Could not retweet, error was: %s. Trying with an other combination of hashtags' %e)
-					pass
-			
-			trials += 1
+		while True:
+			# select a random number of random hastags from the list
+			done = False
+			trials = 1
+			print('Looking for interesting tweets...')
+			while not done and trials <= max_trials:
+				selected_hashtags = random.sample(self.twitter_hashtags, random.randint(1, len(self.twitter_hashtags)))
+				selected_tweet = self.twitter.search_hashtag(selected_hashtags)
+				if selected_tweet != -1:				
+					try:
+						print('Selected hashtags: %s' % str(selected_hashtags))
+						#print('selected_tweet: %s' % str(twitter.get_tweet(selected_tweet)))
+						self.twitter.retweet(selected_tweet)
+						print('Retweeting...')
+						done = True
+					except Exception as e:
+						print('Could not retweet, error was: %s. Trying with an other combination of hashtags' %e)
+						pass
+				
+				trials += 1
 
-		if not done:
-			# You gotta do something, we can not find any more tweet!!!!! SHIT!
-			pass
-		
-		think_time = random.randint(600, 1200)
-		print('Thinking for %d seconds...' % think_time)
-		time.sleep(think_time)
+			if not done:
+				# You gotta do something, we can not find any more tweet!!!!! SHIT!
+				pass
+			
+			think_time = random.randint(600, 1200)
+			print('Thinking for %d seconds...' % think_time)
+			time.sleep(think_time)
 
 
 if __name__ == "__main__":
