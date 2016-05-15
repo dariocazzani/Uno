@@ -4,6 +4,11 @@ import random
 import time
 import threading
 import json
+from APIs import settings
+
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 class Social_brain(object):
 
@@ -73,9 +78,9 @@ class Social_brain(object):
 
 			if not done:
 				# You gotta do something, we can not find any more reddits!!!!! SHIT!
-				pass
+				self.send_email('No more reddits', 'Help')
 
-			think_time = random.randint(1200, 2400)
+			think_time = random.randint(2400, 4800)
 			print('I just posted a reddit. Thinking for %d seconds...' % think_time)
 			time.sleep(think_time)
 
@@ -106,11 +111,25 @@ class Social_brain(object):
 
 			if not done:
 				# You gotta do something, we can not find any more tweet!!!!! SHIT!
-				pass
+				self.send_email('No more tweets to retweet', 'Help')
 			
-			think_time = random.randint(1200, 2400)
-			print('Thinking for %d seconds...' % think_time)
+			think_time = random.randint(2400, 4800)
+			print('I just retweeted, thinking for %d seconds...' % think_time)
 			time.sleep(think_time)
+
+	def send_email(self, subject, text):
+		server = smtplib.SMTP(settings.SMTP_SERVER, settings.SMTP_PORT)
+		server.starttls()
+		server.login(settings.LOGIN_USER, settings.LOGIN_PASSWORD)
+		msg = MIMEMultipart()
+		msg['From'] = settings.LOGIN_USER
+		msg['To'] = settings.MY_EMAIL
+		msg['Subject'] = subject
+		body = text
+		msg.attach(MIMEText(body, 'plain'))
+		message = msg.as_string()
+		server.sendmail(settings.LOGIN_USER, settings.MY_EMAIL, message)
+		server.quit()
 
 
 if __name__ == "__main__":

@@ -10,3 +10,10 @@ ACCESS_TOKEN_SECRET = os.environ.get('ACCESS_TOKEN_SECRET')
 
 # Reddit settings
 USER_AGENT = os.environ.get('USER_AGENT')
+
+# gmail settings
+SMTP_SERVER = os.environ.get('SMTP_SERVER')
+SMTP_PORT = os.environ.get('SMTP_PORT')
+LOGIN_USER = os.environ.get('LOGIN_USER')
+LOGIN_PASSWORD = os.environ.get('LOGIN_PASSWORD')
+UNO_ADDRESS = os.environ.get('UNO_ADDRESS')
