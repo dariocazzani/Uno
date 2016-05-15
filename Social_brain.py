@@ -75,7 +75,7 @@ class Social_brain(object):
 				# You gotta do something, we can not find any more reddits!!!!! SHIT!
 				pass
 
-			think_time = random.randint(600, 1200)
+			think_time = random.randint(1200, 2400)
 			print('I just posted a reddit. Thinking for %d seconds...' % think_time)
 			time.sleep(think_time)
 
@@ -108,7 +108,7 @@ class Social_brain(object):
 				# You gotta do something, we can not find any more tweet!!!!! SHIT!
 				pass
 			
-			think_time = random.randint(600, 1200)
+			think_time = random.randint(1200, 2400)
 			print('Thinking for %d seconds...' % think_time)
 			time.sleep(think_time)
 
