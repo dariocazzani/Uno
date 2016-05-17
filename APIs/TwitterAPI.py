@@ -15,7 +15,7 @@ class TwitterAPI:
         access_token = settings.ACCESS_TOKEN
         access_token_secret = settings.ACCESS_TOKEN_SECRET
         auth.set_access_token(access_token, access_token_secret)
-        
+
         self.api = tweepy.API(auth)
         self.MAX_LEN = 140
 
@@ -104,6 +104,12 @@ class TwitterAPI:
     def get_tweet(self, _id):
         tweet = self.api.get_status(_id)
         return tweet.text
+
+    def find_friend(self):
+        return
+
+    def send_message_newfriend(self):
+        return
  
 
 

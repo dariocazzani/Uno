@@ -2,15 +2,38 @@
 	http://stackoverflow.com/questions/9942594/unicodeencodeerror-ascii-codec-cant-encode-character-u-xa0-in-position-20
 
 * Use wikipedia as source: https://pypi.python.org/pypi/wikipedia/
+
+* send message to new followers - with name
+
+followers = api.followers()
+followers[3].name
+print(follower[0].name.encode('ascii', 'ignore'))
+
+ids = []
+for page in tweepy.Cursor(api.followers_ids, screen_name="dariocazzani").pages():
+        ids.extend(page)
+        time.sleep(60)
+
+api.send_direct_message('dariocazzani', text = 'hi')
+api.get_user(ids[0]).name
+
+ids = ids of knows users
+ids2 = ids of users now
+ids of new users:
+list(set(ids2) - set(ids))
+
+
 * Look all tweets of a user and determine by his/her hashtags if s/he is worth following
+
+	searched_users = [status for status in tweepy.Cursor(api.search_users, q="deeplearning", 
+                                result_type="recent", lang="en").items(max_users)]
+    searched_users[0].description
+    searched_users[0].screen_name
 
 	new_tweets = api.user_timeline(screen_name = 'dariocazzani', count=20)
 	new_tweets[0].text
 	new_tweets[0].created_at
 	new_tweets[0].id_str
-
-	result = api.search_users('dariocazzani')
-	result[0].description
 
 	list_of_
 	for tweet in new_tweets:

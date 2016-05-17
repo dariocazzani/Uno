@@ -43,6 +43,20 @@ class Social_brain(object):
 	def add_interests(self, source, subject):
 		return
 
+	def show_interests(self):
+		print('Loading interests...')
+		filename = 'interests.json'
+		try:
+			with open(filename, 'r') as f:
+				interests = json.load(f)
+		except Exception as e:
+			print('Could not open file %s.\nError was: %s' %(filename, e))
+			return []
+
+		for source in interests.keys():
+			print('source: %s, interests: %s' %(source, interests[source]))
+		return interests
+
 	def post_reddit(self):
 
 		max_trials = 1000
@@ -140,6 +154,8 @@ if __name__ == "__main__":
 
 	thread_retweet = threading.Thread(target=sb.retweet)
 	thread_retweet.start()
+
+	sb.show_interests()
 
 	thread_retweet.join()
 	thread_reddit.join()
