@@ -116,7 +116,7 @@ class TwitterAPI:
         return ids
 
     def get_user_info(self, _id): # return name, description, screen_name
-        return self.api.get_user(_id).name, self.api.get_user(_ids).description, self.api.get_user(_id).screen_name
+        return self.api.get_user(_id).name, self.api.get_user(_id).description, self.api.get_user(_id).screen_name
 
     def get_user_tweets(self, _id): # return a list of tweets for analysis
         return

@@ -81,7 +81,7 @@ class Social_brain(object):
 					print('Title: ' + title)
 					print('Url: ' + link)
 			
-					message = title + ' ' + ' #' + next_reddit_topic + ' ' + '#in' + ' ' + link
+					message = title + ' ' + ' #' + next_reddit_topic + ' ' + link
 					
 					self.twitter.tweet(message)
 					print('Tweeting...')
@@ -145,10 +145,11 @@ class Social_brain(object):
 
 		while True:
 			new_friends = []
+			new_followers_list = []
 			try:
-				new_followers = self.twitter.get_followers_list()
-				if new_followers:
-					new_friends = list(set(new_followers) - set(self.followers))
+				new_followers_list = self.twitter.get_followers_list()
+				if new_followers_list:
+					new_friends = list(set(new_followers_list) - set(self.followers))
 				else:
 					pass
 			except Exception as e:
@@ -172,8 +173,8 @@ class Social_brain(object):
 
 						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests in %s.\n' %(name, common_interests_string)
 					
-					text2 = 'Please, feel free to add me to LinkedIn if want to share more insights: no.linkedin.com/in/dariocazzani\n'
-					text3 = 'Best regards and stay in touch.'
+					text2 = '\nPlease, feel free to add me to LinkedIn if you want to share more insights: no.linkedin.com/in/dariocazzani\n'
+					text3 = '\nBest regards and stay in touch.\n'
 					text = text1 + text2 + text3
 					
 					self.twitter.send_message(screen_name, text)
