@@ -108,10 +108,23 @@ class TwitterAPI:
     def find_friend(self):
         return
 
-    def send_message_newfriend(self):
-        return
- 
+    def get_followers_list(self):
+        ids = []
+        for page in tweepy.Cursor(api.followers_ids, screen_name=self.api.me().screen_name).pages():
+            ids.extend(page)
+            time.sleep(60)
 
+    def get_user_info(self, _id): # return name, description, screen_name
+        return self.api.get_user(_id).name, self.api.get_user(_ids).description, self.api.get_user(_id).screen_name
+
+    def get_user_tweets(self, _id): # return a list of tweets for analysis
+        return
+
+    def send_message(self, screen_name, text):
+        try:
+            self.api.send_direct_message(screen_name, text = text)
+        except Exception as e:
+            print('Could not send a message to %s.\nError was: %s' %(screen_name, e))
 
 if __name__ == "__main__":    
     
