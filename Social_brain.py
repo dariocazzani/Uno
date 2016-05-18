@@ -5,6 +5,7 @@ import time
 import threading
 import json
 from APIs import settings
+from datetime import datetime
 
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
@@ -99,7 +100,8 @@ class Social_brain(object):
 				self.send_email('No more reddits', 'Help')
 
 			think_time = random.randint(20, 40)
-			print('I just posted a reddit. Thinking for %d minutes...' % think_time)
+			now = datetime.now()
+			print('%s - I just posted a reddit. Thinking for %d minutes...' % (now.strftime('%Y/%m/%d %H:%M:%S'), think_time))
 			time.sleep(60 * think_time)
 
 	def retweet(self):
@@ -131,7 +133,8 @@ class Social_brain(object):
 				self.send_email('No more tweets to retweet', 'Help')
 			
 			think_time = random.randint(20, 40)
-			print('I just retweeted, thinking for %d minutes...' % think_time)
+			now = datetime.now()
+			print('%s - I just retweeted. Thinking for %d minutes...' % (now.strftime('%Y/%m/%d %H:%M:%S'), think_time))
 			time.sleep(60 * think_time)
 
 	def find_common_words(self, list1, list2):
@@ -150,6 +153,7 @@ class Social_brain(object):
 				new_followers_list = self.twitter.get_followers_list()
 				if new_followers_list:
 					new_friends = list(set(new_followers_list) - set(self.followers))
+					self.followers = new_followers_list
 				else:
 					pass
 			except Exception as e:
@@ -179,8 +183,9 @@ class Social_brain(object):
 					
 					self.twitter.send_message(screen_name, text)
 
-			think_time = random.randint(15, 25)
-			print('Just checked for new friends, doing it again in %d minutes...' %think_time)
+			think_time = random.randint(10, 20)
+			now = datetime.now()
+			print('%s - Just checked for new friends, doing it again in %d minutes...' % (now.strftime('%Y/%m/%d %H:%M:%S'), think_time))
 			time.sleep(60 * think_time) # sleep for a bit
 
 	def send_email(self, subject, text):
