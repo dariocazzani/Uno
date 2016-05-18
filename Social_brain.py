@@ -22,9 +22,12 @@ class Social_brain(object):
 		self.reddit_topics = self.import_interests('reddit')
 		self.twitter_hashtags = self.import_interests('twitter')
 
+		# get list of current followers
+		self.followers = self.twitter.get_followers_list()
+
 	def import_interests(self, source):
 		
-		print('Loading interests...')
+		print('Loading interests for source %s...', % source)
 		filename = 'interests.json'
 		try:
 			with open(filename, 'r') as f:
@@ -54,7 +57,8 @@ class Social_brain(object):
 			return []
 
 		for source in interests.keys():
-			print('source: %s, interests: %s' %(source, interests[source]))
+			print('\nSource: %s, \nInterests: %s' %(source, interests[source]))
+			print('\n')
 		return interests
 
 	def post_reddit(self):
@@ -94,9 +98,9 @@ class Social_brain(object):
 				# You gotta do something, we can not find any more reddits!!!!! SHIT!
 				self.send_email('No more reddits', 'Help')
 
-			think_time = random.randint(2400, 4800)
-			print('I just posted a reddit. Thinking for %d seconds...' % think_time)
-			time.sleep(think_time)
+			think_time = random.randint(20, 40)
+			print('I just posted a reddit. Thinking for %d minutes...' % think_time)
+			time.sleep(60 * think_time)
 
 	def retweet(self):
 
@@ -119,7 +123,6 @@ class Social_brain(object):
 						done = True
 					except Exception as e:
 						print('Could not retweet, error was: %s. Trying with an other combination of hashtags' %e)
-						pass
 				
 				trials += 1
 
@@ -127,9 +130,51 @@ class Social_brain(object):
 				# You gotta do something, we can not find any more tweet!!!!! SHIT!
 				self.send_email('No more tweets to retweet', 'Help')
 			
-			think_time = random.randint(2400, 4800)
-			print('I just retweeted, thinking for %d seconds...' % think_time)
-			time.sleep(think_time)
+			think_time = random.randint(20, 40)
+			print('I just retweeted, thinking for %d minutes...' % think_time)
+			time.sleep(60 * think_time)
+
+	def find_common_words(self, list1, list2):
+		common_words = []
+		for word in list1:
+			if word in list2:
+				common_words.extend(word)
+		return common_words:
+
+	def send_message_newfriend(self):
+
+		while True:
+			new_friends = []
+			try:
+				new_followers = self.twitter.get_followers_list()
+				new_friends = list(set(new_followers) - set(self.followers))
+			except Exception as e:
+				print('Could not find list of followers.\nError was %s' %e)
+
+			if not new_friends:
+				print('No new friends :-(')
+			else:
+				for friend in new_friends:
+					name, description, screen_name = self.twitter.get_user_info(friend)
+					common_interests = self.find_common_words(description.split(), self.twitter_hashtags)
+					common_interests_string = ''
+					for word in common_interests:
+						common_interests_string = common_interests_string + word + ' '
+					if not common_interests:
+						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests.\n' %name
+					else:
+						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests in %s.\n' %(name, common_interests_string)
+					text2 = 'Please, feel free to add me to LinkedIn if want to share more insights: no.linkedin.com/in/dariocazzani\n'
+					text3 = 'Best regards and stay in touch.'
+					text = text1 + text2 + text3
+					self.twitter.send_message(screen_name, text)
+					"""
+					send a message
+					"""
+
+			think_time = random.randint(15, 25)
+			print('Just checked for new friends, doing it again in %d minutes...' %think_time)
+			time.sleep(60 * think_time) # sleep for a bit
 
 	def send_email(self, subject, text):
 		server = smtplib.SMTP(settings.SMTP_SERVER, settings.SMTP_PORT)
@@ -149,11 +194,15 @@ class Social_brain(object):
 if __name__ == "__main__":
 
 	sb = Social_brain()
+
 	thread_reddit = threading.Thread(target=sb.post_reddit)
 	thread_reddit.start()
 
 	thread_retweet = threading.Thread(target=sb.retweet)
 	thread_retweet.start()
+
+	thread_message_newfriend = threading.Thread(target = sb.send_message_newfriend)
+	thread_message_newfriend.start()
 
 	sb.show_interests()
 
