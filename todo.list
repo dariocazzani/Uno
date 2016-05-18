@@ -27,5 +27,6 @@ print(follower[0].name.encode('ascii', 'ignore'))
 
 	d0 = new_tweets[0].created_at
 
-* add hashtag #in for letting IFTTT posting pon linked in your tweets
+* add timestamp easy to read whenever you say "waiting..."
 
+* move certain functions from Social_brain to folder: utils

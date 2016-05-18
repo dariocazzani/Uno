@@ -81,7 +81,7 @@ class Social_brain(object):
 					print('Title: ' + title)
 					print('Url: ' + link)
 			
-					message = title + ' ' + ' #' + next_reddit_topic + ' ' + link
+					message = title + ' ' + ' #' + next_reddit_topic + ' ' + '#in' + ' ' + link
 					
 					self.twitter.tweet(message)
 					print('Tweeting...')
@@ -147,7 +147,7 @@ class Social_brain(object):
 			new_friends = []
 			try:
 				new_followers = self.twitter.get_followers_list()
-				if new_friends:
+				if new_followers:
 					new_friends = list(set(new_followers) - set(self.followers))
 				else:
 					pass
