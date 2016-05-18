@@ -110,9 +110,10 @@ class TwitterAPI:
 
     def get_followers_list(self):
         ids = []
-        for page in tweepy.Cursor(api.followers_ids, screen_name=self.api.me().screen_name).pages():
+        for page in tweepy.Cursor(self.api.followers_ids, screen_name=self.api.me().screen_name).pages():
             ids.extend(page)
             time.sleep(60)
+        return ids
 
     def get_user_info(self, _id): # return name, description, screen_name
         return self.api.get_user(_id).name, self.api.get_user(_ids).description, self.api.get_user(_id).screen_name

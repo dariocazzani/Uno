@@ -27,7 +27,7 @@ class Social_brain(object):
 
 	def import_interests(self, source):
 		
-		print('Loading interests for source %s...', % source)
+		print('Loading interests for source %s...' % source)
 		filename = 'interests.json'
 		try:
 			with open(filename, 'r') as f:
@@ -139,7 +139,7 @@ class Social_brain(object):
 		for word in list1:
 			if word in list2:
 				common_words.extend(word)
-		return common_words:
+		return common_words
 
 	def send_message_newfriend(self):
 
@@ -147,7 +147,10 @@ class Social_brain(object):
 			new_friends = []
 			try:
 				new_followers = self.twitter.get_followers_list()
-				new_friends = list(set(new_followers) - set(self.followers))
+				if new_friends:
+					new_friends = list(set(new_followers) - set(self.followers))
+				else:
+					pass
 			except Exception as e:
 				print('Could not find list of followers.\nError was %s' %e)
 
@@ -155,22 +158,25 @@ class Social_brain(object):
 				print('No new friends :-(')
 			else:
 				for friend in new_friends:
+					print('Found %d new_friends!' %len(new_friends))
 					name, description, screen_name = self.twitter.get_user_info(friend)
 					common_interests = self.find_common_words(description.split(), self.twitter_hashtags)
+					
 					common_interests_string = ''
-					for word in common_interests:
-						common_interests_string = common_interests_string + word + ' '
 					if not common_interests:
 						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests.\n' %name
 					else:
+						for word in common_interests:
+							common_interests_string = common_interests_string + word + ' '
+						print('We have these %s interests in common' % common_interests_string)
+
 						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests in %s.\n' %(name, common_interests_string)
+					
 					text2 = 'Please, feel free to add me to LinkedIn if want to share more insights: no.linkedin.com/in/dariocazzani\n'
 					text3 = 'Best regards and stay in touch.'
 					text = text1 + text2 + text3
+					
 					self.twitter.send_message(screen_name, text)
-					"""
-					send a message
-					"""
 
 			think_time = random.randint(15, 25)
 			print('Just checked for new friends, doing it again in %d minutes...' %think_time)

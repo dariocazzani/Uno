@@ -3,24 +3,11 @@
 
 * Use wikipedia as source: https://pypi.python.org/pypi/wikipedia/
 
-* send message to new followers - with name
+* send message to new followers - with name and possibly shown interests in its tweets
 
 followers = api.followers()
 followers[3].name
 print(follower[0].name.encode('ascii', 'ignore'))
-
-ids = []
-for page in tweepy.Cursor(api.followers_ids, screen_name="dariocazzani").pages():
-        ids.extend(page)
-        time.sleep(60)
-
-api.send_direct_message('dariocazzani', text = 'hi')
-api.get_user(ids[0]).name
-
-ids = ids of knows users
-ids2 = ids of users now
-ids of new users:
-list(set(ids2) - set(ids))
 
 
 * Look all tweets of a user and determine by his/her hashtags if s/he is worth following
@@ -39,4 +26,6 @@ list(set(ids2) - set(ids))
 	for tweet in new_tweets:
 
 	d0 = new_tweets[0].created_at
+
+* add hashtag #in for letting IFTTT posting pon linked in your tweets
 
