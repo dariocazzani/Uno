@@ -167,12 +167,10 @@ class Social_brain(object):
 					name, description, screen_name = self.twitter.get_user_info(friend)
 					common_interests = self.find_common_words(description.split(), self.twitter_hashtags)
 					
-					common_interests_string = ''
 					if not common_interests:
 						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests.\n' %name
 					else:
-						for word in common_interests:
-							common_interests_string = common_interests_string + word + ' '
+						common_interests_string = ' '.join(common_interests)
 						print('We have these %s interests in common' % common_interests_string)
 
 						text1 = 'Dear %s, it is great to connect with you!.\nI am glad that we share the same interests in %s.\n' %(name, common_interests_string)
