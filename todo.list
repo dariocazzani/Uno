@@ -21,3 +21,5 @@
 	d0 = new_tweets[0].created_at
 
 * move certain functions from Social_brain to folder: utils
+
+* follow and retweet and respond to famous twitters
