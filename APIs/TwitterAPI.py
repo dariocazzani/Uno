@@ -18,6 +18,7 @@ class TwitterAPI:
 
         self.api = tweepy.API(auth)
         self.MAX_LEN = 140
+        self.sleeptime = 20 #minutes
 
         self.PROJECT_DIR = settings.PROJECT_DIR
         self.filename_ids = self.PROJECT_DIR + '/used_tweets.ids'
@@ -72,8 +73,8 @@ class TwitterAPI:
                     searched_tweets = [status for status in tweepy.Cursor(self.api.search, q=query, 
                                 result_type="recent", lang="en").items(max_tweets)]
                 except Exception as e:
-                    print('Could not search tweets, error was %s, possibly too many requests.\nSleeping for 5 minutes...' %e)
-                    time.sleep(300) 
+                    print('Could not search tweets, error was %s, possibly too many requests.\nSleeping for %s minutes...' %(e,  self.sleeptime))
+                    time.sleep(60 * self.sleeptime) 
 
         status = 0
         # select one tweet that has not been searched before
